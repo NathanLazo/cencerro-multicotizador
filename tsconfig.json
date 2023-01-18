@@ -23,6 +23,7 @@
       "@styles/*": ["styles/*"],
       "@public/*": ["../public/*"],
       "@lib/*": ["lib/*"],
+      "@utils/*": ["utils/*"],
       "@addOns/*": ["addOns/*"],
       "@hooks/*": ["hooks/*"],
       "@secure/*": ["secure/*"],
