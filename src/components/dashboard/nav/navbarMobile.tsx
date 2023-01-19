@@ -3,12 +3,14 @@ import { Dialog, Transition } from '@headlessui/react'
 import {
     XMarkIcon,
 } from '@heroicons/react/24/outline'
+import Logo from '@components/logo';
 
 type Props = {
     sidebarOpen: boolean
     setSidebarOpen: (val: boolean) => void
     classNames: (...classes: string[]) => string
     navigation: {
+        id: number
         name: string;
         href: string;
         icon: (props: SVGProps<SVGSVGElement> & {
@@ -17,14 +19,21 @@ type Props = {
         }) => JSX.Element;
         current: boolean;
     }[]
+    navbarState: number
+    setNavbarState: (val: number) => void
 };
 
 const NavbarMobile: React.FC<Props> = ({
     sidebarOpen,
     setSidebarOpen,
     classNames,
-    navigation
+    navigation,
+    navbarState,
+    setNavbarState
 }) => {
+
+
+
 
     return (
         <>
@@ -75,29 +84,32 @@ const NavbarMobile: React.FC<Props> = ({
                                 </Transition.Child>
                                 <div className="h-0 flex-1 overflow-y-auto pt-5 pb-4">
                                     <div className="flex flex-shrink-0 items-center px-4">
-                                        {/* LOGO HERE */}
+                                        <Logo />
                                     </div>
                                     <nav className="mt-5 space-y-1 px-2">
                                         {navigation.map((item) => (
-                                            <a
+                                            <button
                                                 key={item.name}
-                                                href={item.href}
                                                 className={classNames(
-                                                    item.current
+                                                    navbarState === item.id
                                                         ? 'bg-gray-100 text-gray-900'
                                                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                                    'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                                                    'group flex items-center px-2 py-2 text-base font-medium rounded-md w-full'
                                                 )}
+                                                onClick={() => {
+                                                    setNavbarState(item.id)
+                                                    setSidebarOpen(true)
+                                                }}
                                             >
                                                 <item.icon
                                                     className={classNames(
-                                                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                                        navbarState === item.id ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                                                         'mr-4 flex-shrink-0 h-6 w-6'
                                                     )}
                                                     aria-hidden="true"
                                                 />
                                                 {item.name}
-                                            </a>
+                                            </button>
                                         ))}
                                     </nav>
                                 </div>

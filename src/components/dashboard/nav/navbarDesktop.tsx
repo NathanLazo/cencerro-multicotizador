@@ -1,8 +1,10 @@
+import Logo from '@components/logo';
 import { SVGProps } from 'react'
 
 type Props = {
     classNames: (...classes: string[]) => string
     navigation: {
+        id: number
         name: string;
         href: string;
         icon: (props: SVGProps<SVGSVGElement> & {
@@ -11,12 +13,17 @@ type Props = {
         }) => JSX.Element;
         current: boolean;
     }[]
+    navbarState: number
+    setNavbarState: (val: number) => void
 };
 
 const NavbarDesktop: React.FC<Props> = ({
     classNames,
-    navigation
+    navigation,
+    navbarState,
+    setNavbarState
 }) => {
+
     return (
         <>
             <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
@@ -24,27 +31,29 @@ const NavbarDesktop: React.FC<Props> = ({
                 <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
                     <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
                         <div className="flex flex-shrink-0 items-center px-4">
-                            {/* LOGO HERE */}
+                            <Logo />
                         </div>
                         <nav className="mt-5 flex-1 space-y-1 bg-white px-2">
                             {navigation.map((item) => (
-                                <a
+                                <button
                                     key={item.name}
-                                    href={item.href}
                                     className={classNames(
-                                        item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                                        navbarState === item.id ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full'
                                     )}
+                                    onClick={() => {
+                                        setNavbarState(item.id)
+                                    }}
                                 >
                                     <item.icon
                                         className={classNames(
-                                            item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                            navbarState === item.id ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                                             'mr-3 flex-shrink-0 h-6 w-6'
                                         )}
                                         aria-hidden="true"
                                     />
                                     {item.name}
-                                </a>
+                                </button>
                             ))}
                         </nav>
                     </div>

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const Register: React.FC = () => {
+const RegisterComponent: React.FC = () => {
 
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -123,4 +123,4 @@ const Register: React.FC = () => {
     )
 }
 
-export default Register;
+export default RegisterComponent;

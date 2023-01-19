@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const Login: React.FC = () => {
+const LoginComponent: React.FC = () => {
 
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -90,4 +90,4 @@ const Login: React.FC = () => {
     )
 }
 
-export default Login;
+export default LoginComponent;
