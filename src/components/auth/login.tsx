@@ -1,13 +1,16 @@
 import { useRef } from "react";
+import { z } from "zod";
 
 const LoginComponent: React.FC = () => {
 
-    const formRef = useRef<HTMLFormElement>(null);
+    const formRef = useRef(null);
 
-    interface FormObject {
-        email: FormDataEntryValue | null,
-        password: FormDataEntryValue | null
-    }
+
+    const FormObjectValidation = z.object({
+        email: z.string().email({ message: "Invalid email address" }),
+        password: z.string().min(4)
+    });
+    type FormObjectValidation = z.infer<typeof FormObjectValidation>;
 
 
 
@@ -15,11 +18,12 @@ const LoginComponent: React.FC = () => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(formRef.current || undefined);
-        const data: FormObject = {
-            email: formData.get('email'),
-            password: formData.get('password')
+        const data = {
+            email: formData.get('email')?.toString(),
+            password: formData.get('password')?.toString()
         }
-
+        const { success } = FormObjectValidation.safeParse(data)
+        console.log("🚀 ~ file: login.tsx:27 ~ handleSubmit ~ isValid", success)
     }
 
     return (

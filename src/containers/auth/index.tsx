@@ -1,7 +1,7 @@
 
 import OAuth from '@components/auth/oAuth';
 import Title from '@components/auth/title';
-import { ReactNode, useState } from 'react';
+import { type ReactNode } from 'react';
 import NavContainer from '@containers/home/nav';
 
 

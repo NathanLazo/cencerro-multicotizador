@@ -1,5 +1,5 @@
 import Logo from '@components/logo';
-import { SVGProps } from 'react'
+import { type SVGProps } from 'react'
 
 type Props = {
     classNames: (...classes: string[]) => string

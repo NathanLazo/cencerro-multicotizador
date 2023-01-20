@@ -1,27 +1,49 @@
 import { useRef } from "react";
+import { z } from "zod";
 
 const RegisterComponent: React.FC = () => {
 
     const formRef = useRef<HTMLFormElement>(null);
 
-    interface FormObject {
-        email: FormDataEntryValue | null,
-        password: FormDataEntryValue | null,
-        password_confirmation: FormDataEntryValue | null,
+
+    const FormObjectValidation = z.object({
+        email: z.string().email({ message: "Invalid email address" }),
+        password: z.string().min(8),
+        password_confirmation: z.string().min(8)
+    }).refine((data) => data.password === data.password_confirmation, {
+        path: ["password_confirmation"],
+        message: "Password don't match",
+    });
+    type FormObjectValidation = z.infer<typeof FormObjectValidation>;
+
+    type errors = {
+        code: string
+        exact: boolean
+        inclusive: boolean
+        message: string
+        minimum: number
+        path: string[]
+        type: string
     }
-
-
 
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(formRef.current || undefined);
-        const data: FormObject = {
-            email: formData.get('email'),
-            password: formData.get('password'),
-            password_confirmation: formData.get('password_confirmation')
+        const data = {
+            email: formData.get('email')?.toString(),
+            password: formData.get('password')?.toString(),
+            password_confirmation: formData.get('password_confirmation')?.toString()
         }
-
+        const isValid = FormObjectValidation.safeParse(data)
+        if (isValid.success) {
+            // do this
+        } else {
+            const errors = JSON.parse(isValid.error.message)
+            errors.map((item: errors) => {
+                console.log('In: ' + item.path[0] + ' ' + item.message); //React Hot toast here
+            })
+        }
     }
 
     return (
