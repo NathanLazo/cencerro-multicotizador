@@ -1,4 +1,5 @@
 import Logo from '@components/logo';
+import { signOut } from 'next-auth/react';
 import { type SVGProps } from 'react'
 
 type Props = {
@@ -66,6 +67,15 @@ const NavbarDesktop: React.FC<Props> = ({
                                 <div className="ml-3">
                                     <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
                                     <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                    <button className="text-xs font-medium text-gray-500 group-hover:text-gray-700"
+                                        onClick={
+                                            () => {
+                                                signOut()
+                                            }
+                                        }
+                                    >
+                                        Sign Out
+                                    </button>
                                 </div>
                             </div>
                         </a>

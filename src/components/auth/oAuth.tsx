@@ -1,6 +1,9 @@
+import { signIn } from "next-auth/react";
 
 
 const OAuth: React.FC = () => {
+
+
 
     return (
         <>
@@ -16,9 +19,11 @@ const OAuth: React.FC = () => {
 
                 <div className="mt-6 flex justify-center">
                     <div>
-                        <a
-                            href="#"
+                        <button
                             className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                            onClick={() => {
+                                signIn('google', { callbackUrl: "http://localhost:3000/dashboard" })
+                            }}
                         >
                             <span className="sr-only">Sign in with Google</span>
                             <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-brand-google"
@@ -27,12 +32,13 @@ const OAuth: React.FC = () => {
                                 <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8" />
                             </svg>
 
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
         </>
     )
 }
+
 
 export default OAuth;

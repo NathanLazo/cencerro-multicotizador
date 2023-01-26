@@ -11,10 +11,10 @@ const MainContent = () => {
                             <div className="relative overflow-hidden rounded-full py-1.5 px-4 text-sm leading-6 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                                 <span className="text-gray-600">
                                     ¿Como se usa?{' '}
-                                    <a href="#" className="font-semibold text-indigo-600">
+                                    <button className="font-semibold text-indigo-600">
                                         <span className="absolute inset-0" aria-hidden="true" />
                                         Leer más <span aria-hidden="true">&rarr;</span>
-                                    </a>
+                                    </button>
                                 </span>
                             </div>
                         </div>
@@ -27,19 +27,9 @@ const MainContent = () => {
                             </p>
                             <div className="mt-8 flex gap-x-4 sm:justify-center">
                                 <Link
-                                    href="/auth/register"
-                                    passHref
-                                    className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700"
-                                >
-                                    Registrate ahora{' '}
-                                    <span className="text-indigo-200" aria-hidden="true">
-                                        &rarr;
-                                    </span>
-                                </Link>
-                                <Link
                                     href="/dashboard"
                                     passHref
-                                    className="inline-block rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
+                                    className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700"
                                 >
                                     Demo{' '}
                                     <span className="text-gray-400" aria-hidden="true">
