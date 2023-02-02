@@ -1,6 +1,8 @@
 import Logo from '@components/logo';
 import { signOut } from 'next-auth/react';
+import Image from 'next/image';
 import { type SVGProps } from 'react'
+import { useRouter } from 'next/router';
 
 type Props = {
     classNames: (...classes: string[]) => string
@@ -16,14 +18,22 @@ type Props = {
     }[]
     navbarState: number
     setNavbarState: (val: number) => void
+    userImage: string | null
+    userName: string | null
+    isAdministrator: boolean
 };
 
 const NavbarDesktop: React.FC<Props> = ({
     classNames,
     navigation,
     navbarState,
-    setNavbarState
+    setNavbarState,
+    userImage,
+    userName,
+    isAdministrator
 }) => {
+
+    const router = useRouter();
 
     return (
         <>
@@ -59,15 +69,25 @@ const NavbarDesktop: React.FC<Props> = ({
                         </nav>
                     </div>
                     <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                        <a href="#" className="group block w-full flex-shrink-0">
+                        <div className="group block w-full flex-shrink-0">
                             <div className="flex items-center">
                                 <div>
-                                    {/* PROFILE IMAGE HERE */}
+                                    <Image src={userImage ?? ''} alt="User Image" width={40} height={40} className="inline-block h-9 w-9 rounded-full" />
                                 </div>
                                 <div className="ml-3">
-                                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
-                                    <button className="text-xs font-medium text-gray-500 group-hover:text-gray-700"
+                                    <p className="text-sm font-medium text-gray-900">{userName}</p>
+                                    {isAdministrator && (<button className="text-xs font-medium text-gray-400 hover:text-gray-800"
+                                        onClick={
+                                            () => {
+                                                router.push('/admin')
+                                            }
+                                        }
+                                    >
+                                        Admin panel
+                                    </button>
+                                    )}
+                                    <br />
+                                    <button className="text-xs font-medium text-gray-400 hover:text-gray-800"
                                         onClick={
                                             () => {
                                                 signOut()
@@ -78,7 +98,7 @@ const NavbarDesktop: React.FC<Props> = ({
                                     </button>
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>

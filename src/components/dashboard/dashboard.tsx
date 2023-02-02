@@ -1,6 +1,6 @@
 
 
-const MainDashboard: React.FC = () => {
+const Dashboard: React.FC = () => {
 
     return (
         <>
@@ -22,4 +22,4 @@ const MainDashboard: React.FC = () => {
     )
 }
 
-export default MainDashboard;
+export default Dashboard;

@@ -2,7 +2,7 @@
 import OAuth from '@components/auth/oAuth';
 import Title from '@components/auth/title';
 import { type ReactNode } from 'react';
-import NavContainer from '@containers/home/nav';
+import NavContainer from '@components/nav/navContainer';
 
 
 type Props = {

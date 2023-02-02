@@ -1,6 +1,6 @@
 
 import RegisterComponent from '@components/auth/register';
-import AuthContainer from '@containers/auth';
+import AuthContainer from '@components/auth/container'
 import { type NextPage } from "next";
 import Head from 'next/head';
 

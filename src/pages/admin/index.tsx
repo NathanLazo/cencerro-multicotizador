@@ -5,12 +5,10 @@ import { api } from "@utils/api";
 import z from "zod";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+import AdminContainer from "@components/admin/container"
 
-import DashboardContainer from "@components/dashboard/container";
-import NoAccess from "@components/dashboard/noAccess";
+const Home: NextPage = () => {
 
-
-const Dashboard: NextPage = () => {
 
     const session = useSession();
     const router = useRouter();
@@ -30,19 +28,14 @@ const Dashboard: NextPage = () => {
             toast.error("Error al obtener los datos del usuario");
             console.log(error);
         } else if (data) {
-            if (data.accessGranted) {
-                toast.success(`Bienvenido ${data.name}`);
+            if (data.accessGranted && data.isAdministrator) {
                 return (
                     <>
                         <Head>
-                            <title>Panel de consultas</title>
+                            <title>Panel de administrador</title>
                             <meta name="description" content="Multicotizador de seguros creado por Cencerro" />
                         </Head>
-                        <DashboardContainer
-                            name={data.name}
-                            image={data.image}
-                            isAdministrator={data.isAdministrator}
-                        />
+                        <AdminContainer />
                     </>
                 );
             } else {
@@ -52,9 +45,6 @@ const Dashboard: NextPage = () => {
                         <Head>
                             <title>No tiene acceso</title>
                         </Head>
-                        <NoAccess
-                            email={data.email}
-                        />
                     </>
                 );
             }
@@ -70,6 +60,7 @@ const Dashboard: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const session = await getSession(context);
+
 
     if (!session) {
         return {
@@ -87,4 +78,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 }
 
-export default Dashboard;
+export default Home;
+

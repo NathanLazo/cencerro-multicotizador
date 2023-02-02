@@ -1,6 +1,6 @@
 
 import LoginComponent from '@components/auth/login';
-import AuthContainer from '@containers/auth';
+import AuthContainer from '@components/auth/container'
 import { type NextPage } from "next";
 import Head from 'next/head';
 

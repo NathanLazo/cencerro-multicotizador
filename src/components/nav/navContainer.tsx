@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
-import NavbarDesktop from '@components/home/navbarDesktop'
-import NavbarMobile from '@components/home/navbarMobile';
+import NavbarDesktop from '@components/nav/navbarDesktop'
+import NavbarMobile from '@components/nav/navbarMobile';
 
 type NavTypes = {
     name: string

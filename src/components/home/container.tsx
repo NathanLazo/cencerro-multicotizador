@@ -1,6 +1,6 @@
 import Background from '@components/home/background'
 import MainContent from '@components/home/main'
-import NavContainer from '@containers/home/nav';
+import NavContainer from '@components/nav/navContainer'
 
 
 const HomePage: React.FC = () => {
