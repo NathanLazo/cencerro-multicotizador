@@ -18,7 +18,7 @@ const Dashboard: NextPage = () => {
     const userSchema = z.object({
         email: z.string().email(),
         name: z.string(),
-        image: z.string(),
+        image: z.string().optional(),
         id: z.string()
     });
 

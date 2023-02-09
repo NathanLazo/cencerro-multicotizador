@@ -3,6 +3,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "react-hot-toast";
+import { api } from "@utils/api";
 
 const RegisterComponent: React.FC = () => {
 
@@ -19,7 +20,6 @@ const RegisterComponent: React.FC = () => {
             )
             .min(8, "Must be at least 8 characters in length"),
         password_confirmation: z.string(),
-        remember_me: z.boolean()
     }).refine((data) => data.password === data.password_confirmation, {
         path: ["password_confirmation"],
     });
@@ -28,13 +28,18 @@ const RegisterComponent: React.FC = () => {
 
     type FormObjectValidation = z.infer<typeof formObjectValidation>;
 
+    const createUserMutation = api.useCustomAuth.signUp.useMutation();
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormObjectValidation>({
         resolver: zodResolver(formObjectValidation),
     });
     const onSubmit: SubmitHandler<FormObjectValidation> = (data) => {
-        toast.success("Registrado correctamente!!");
-        // send to next auth
+        createUserMutation.mutate({
+            name: data.name,
+            email: data.email,
+            password: data.password,
+        })
+        toast.loading("Creando usuario...");
     };
 
     if (errors.email?.message) toast.error("Email no valido");
@@ -46,21 +51,6 @@ const RegisterComponent: React.FC = () => {
         <>
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Email address
-                    </label>
-                    <div className="mt-1">
-                        <input
-                            id="email"
-                            {...register("email")}
-                            type="email"
-                            autoComplete="email"
-                            required
-                            className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                        />
-                    </div>
-                </div>
-                <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                         Complete name
                     </label>
@@ -70,6 +60,21 @@ const RegisterComponent: React.FC = () => {
                             {...register("name")}
                             type="text"
                             autoComplete="name"
+                            required
+                            className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                        />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email address
+                    </label>
+                    <div className="mt-1">
+                        <input
+                            id="email"
+                            {...register("email")}
+                            type="email"
+                            autoComplete="email"
                             required
                             className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                         />
@@ -110,32 +115,12 @@ const RegisterComponent: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        <input
-                            id="remember-me"
-                            {...register("remember_me")}
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                            Remember me
-                        </label>
-                    </div>
-
-                    <div className="text-sm">
-                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            Forgot your password?
-                        </a>
-                    </div>
-                </div>
-
                 <div>
                     <button
                         type="submit"
                         className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Sign in
+                        Register
                     </button>
                 </div>
             </form>

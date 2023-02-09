@@ -19,11 +19,6 @@ import { api } from '@utils/api';
 import ProfileDescription from './profileDescription';
 
 
-const tabs = [
-    { id: 1, name: 'Perfil', current: true },
-    { id: 2, name: 'Modificar', current: false },
-    { id: 3, name: 'Eliminar', current: false },
-]
 
 const Container: React.FC = () => {
 
@@ -49,11 +44,11 @@ const Container: React.FC = () => {
                                 <SearchUsers />{/* Mobile search users */}
                             </div>
 
-                            <article>
+                            <article className="hidden xl:block">
                                 {/* User things here */}
 
                                 {selectedUser && <ProfileHeader selectedUser={selectedUser} />}
-                                {selectedUser && <ProfileTabs tabs={tabs} />}
+                                {selectedUser && <ProfileTabs />}
                                 {selectedUser && <ProfileDescription selectedUser={selectedUser} />}
                             </article>
                         </main>

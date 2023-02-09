@@ -1,5 +1,6 @@
 
 import { XCircleIcon } from '@heroicons/react/20/solid'
+import { signOut } from 'next-auth/react';
 
 
 const NoAccess: React.FC<{ email: string | null }> = ({
@@ -25,6 +26,18 @@ const NoAccess: React.FC<{ email: string | null }> = ({
                             </div>
                             <br />
                             <code className='select-all bg-gray-800 text-white px-2 py-1 rounded-xl flex justify-center'>{email ? email : 'email no encontrado'}</code>
+                            <div className='flex justify-center items-center mt-8'>
+                                <button className='bg-red-300 px-4 py-2 rounded-lg'
+                                    onClick={
+                                        () => {
+                                            signOut();
+                                        }
+                                    }
+                                >
+                                    Cerrar sesión
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -2,21 +2,21 @@ import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { signIn } from "next-auth/react";
 
 const LoginComponent: React.FC = () => {
 
     const formObjectValidation = z.object({
         email: z.string().email({ message: "Email no valido" }),
         password: z.string(),
-        remember_me: z.boolean()
     });
     type FormObjectValidation = z.infer<typeof formObjectValidation>;
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormObjectValidation>({
         resolver: zodResolver(formObjectValidation),
     });
-    const onSubmit: SubmitHandler<FormObjectValidation> = (data) => {
-        console.log("🚀 ~ file: login.tsx:26 ~ data", data)
+    const onSubmit: SubmitHandler<FormObjectValidation> = async (data) => {
+        await signIn("credentials", { ...data, callbackUrl: "/dashboard" });
     };
 
 
@@ -62,7 +62,7 @@ const LoginComponent: React.FC = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center">
+                    {/* <div className="flex items-center">
                         <input
                             id="remember-me"
                             {...register("remember_me")}
@@ -72,7 +72,7 @@ const LoginComponent: React.FC = () => {
                         <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                             Remember me
                         </label>
-                    </div>
+                    </div> */}
 
                     <div className="text-sm">
                         <button className="font-medium text-indigo-600 hover:text-indigo-500">

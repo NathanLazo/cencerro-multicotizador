@@ -17,10 +17,10 @@ const OAuth: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-6 flex justify-center">
+                <div className="mt-6 flex justify-center items-center">
                     <div>
                         <button
-                            className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                            className="inline-flex w-full items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                             onClick={() => {
                                 signIn('google', { callbackUrl: "http://localhost:3000/dashboard" })
                             }}

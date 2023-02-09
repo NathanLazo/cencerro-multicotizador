@@ -8,12 +8,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Example {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-}
-
 model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   id                String  @id @default(cuid())
@@ -47,10 +41,13 @@ model User {
   email           String    @unique
   emailVerified   DateTime?
   image           String?
+  password        String?
   accounts        Account[]
   sessions        Session[]
   accessGranted   Boolean   @default(false)
   isAdministrator Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model VerificationToken {
