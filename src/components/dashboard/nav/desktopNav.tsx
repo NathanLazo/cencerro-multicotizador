@@ -3,6 +3,8 @@ import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { type SVGProps } from 'react'
 import { useRouter } from 'next/router';
+import { User } from '@prisma/client';
+import Avatar from 'boring-avatars';
 
 type Props = {
     classNames: (...classes: string[]) => string
@@ -18,9 +20,7 @@ type Props = {
     }[]
     navbarState: number
     setNavbarState: (val: number) => void
-    userImage: string | null
-    userName: string | null
-    isAdministrator: boolean
+    user: User
 };
 
 const NavbarDesktop: React.FC<Props> = ({
@@ -28,9 +28,7 @@ const NavbarDesktop: React.FC<Props> = ({
     navigation,
     navbarState,
     setNavbarState,
-    userImage,
-    userName,
-    isAdministrator
+    user
 }) => {
 
     const router = useRouter();
@@ -72,11 +70,25 @@ const NavbarDesktop: React.FC<Props> = ({
                         <div className="group block w-full flex-shrink-0">
                             <div className="flex items-center">
                                 <div>
-                                    <Image src={userImage ?? ''} alt="User Image" width={40} height={40} className="inline-block h-9 w-9 rounded-full" />
+                                    {
+                                        user.image !== null
+                                            ? <Image
+                                                className="rounded-full"
+                                                src={user.image}
+                                                alt="User image"
+                                                width={40}
+                                                height={40}
+                                            />
+                                            : <Avatar
+                                                size={40}
+                                                name={user.name || 'random'}
+                                                variant="beam"
+                                            />
+                                    }
                                 </div>
                                 <div className="ml-3">
-                                    <p className="text-sm font-medium text-gray-900">{userName}</p>
-                                    {isAdministrator && (<button className="text-xs font-medium text-gray-400 hover:text-gray-800"
+                                    <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                                    {user.isAdministrator && (<button className="text-xs font-medium text-gray-400 hover:text-gray-800"
                                         onClick={
                                             () => {
                                                 router.push('/admin')

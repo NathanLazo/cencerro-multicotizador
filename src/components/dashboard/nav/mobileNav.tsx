@@ -1,28 +1,23 @@
+// Components
 import { Fragment } from 'react'
-import { type SVGProps } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import {
-    XMarkIcon,
-} from '@heroicons/react/24/outline'
-import Logo from '@components/logo';
 
-type Props = {
-    sidebarOpen: boolean
-    setSidebarOpen: (val: boolean) => void
-    classNames: (...classes: string[]) => string
-    navigation: {
-        id: number
-        name: string;
-        href: string;
-        icon: (props: SVGProps<SVGSVGElement> & {
-            title?: string | undefined;
-            titleId?: string | undefined;
-        }) => JSX.Element;
-        current: boolean;
-    }[]
-    navbarState: number
-    setNavbarState: (val: number) => void
-};
+// Icons
+import { XMarkIcon } from '@heroicons/react/24/outline'
+
+// Images
+import Logo from '@components/logo';
+import Avatar from 'boring-avatars';
+import Image from 'next/image';
+
+// Auth
+import { signOut } from 'next-auth/react';
+
+// Func props
+import { type Props } from './props'
+
+// Router
+import { useRouter } from 'next/router';
 
 const NavbarMobile: React.FC<Props> = ({
     sidebarOpen,
@@ -30,11 +25,11 @@ const NavbarMobile: React.FC<Props> = ({
     classNames,
     navigation,
     navbarState,
-    setNavbarState
+    setNavbarState,
+    user
 }) => {
 
-
-
+    const router = useRouter();
 
     return (
         <>
@@ -118,11 +113,43 @@ const NavbarMobile: React.FC<Props> = ({
                                     <a href="#" className="group block flex-shrink-0">
                                         <div className="flex items-center">
                                             <div>
-                                                {/* USER IMAGE HERE */}
+                                                {
+                                                    user.image !== null
+                                                        ? <Image
+                                                            className="rounded-full"
+                                                            src={user.image}
+                                                            alt=""
+                                                            width={40}
+                                                            height={40}
+                                                        />
+                                                        : <Avatar
+                                                            size={40}
+                                                            name={user.name || 'random'}
+                                                            variant="beam"
+                                                        />
+                                                }
                                             </div>
-                                            <div className="ml-3">
-                                                <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                                                <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                                            <div className="ml-3 flex flex-col text-left justify-center items-start gap-3">
+                                                <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">{user.name}</p>
+                                                {user.isAdministrator && (<button className="text-xs font-medium text-gray-400 hover:text-gray-800"
+                                                    onClick={
+                                                        () => {
+                                                            router.push('/admin')
+                                                        }
+                                                    }
+                                                >
+                                                    Admin panel
+                                                </button>
+                                                )}
+                                                <button className="text-xs font-medium text-gray-400 hover:text-gray-800"
+                                                    onClick={
+                                                        () => {
+                                                            signOut()
+                                                        }
+                                                    }
+                                                >
+                                                    Sign Out
+                                                </button>
                                             </div>
                                         </div>
                                     </a>

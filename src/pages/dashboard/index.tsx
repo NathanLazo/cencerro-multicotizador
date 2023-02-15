@@ -18,7 +18,7 @@ const Dashboard: NextPage = () => {
     const userSchema = z.object({
         email: z.string().email(),
         name: z.string(),
-        image: z.string().optional(),
+        image: z.string().optional().nullable(),
         id: z.string()
     });
 
@@ -39,9 +39,7 @@ const Dashboard: NextPage = () => {
                             <meta name="description" content="Multicotizador de seguros creado por Cencerro" />
                         </Head>
                         <DashboardContainer
-                            name={data.name}
-                            image={data.image}
-                            isAdministrator={data.isAdministrator}
+                            user={data}
                         />
                     </>
                 );

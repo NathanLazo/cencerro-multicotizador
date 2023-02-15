@@ -7,6 +7,7 @@ import MobileNav from '@components/dashboard/nav/mobileNav'
 import DesktopNav from '@components/dashboard/nav/desktopNav';
 import Dashboard from '@components/dashboard/dashboard';
 import MobileNavButton from '@components/dashboard/nav/mobileNavButton';
+import { type User } from '@prisma/client';
 
 const navigation = [
     { id: 1, name: 'Todos', href: '#', icon: BuildingOffice2Icon, current: true },
@@ -19,18 +20,12 @@ function classNames(...classes: string[]) {
 }
 
 const DashboardContainer: React.FC<{
-    name: string,
-    image: string | null,
-    isAdministrator: boolean,
+    user: User
 }> = ({
-    name, // This is the name of the user
-    image, // This is the image of the user
-    isAdministrator, // This is a boolean that indicates if the user is an administrator
+    user
 }) => {
         const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
         const [navbarState, setNavbarState] = useState<number>(1);
-
-        console.log(name, image, isAdministrator);
 
         return (
             <>
@@ -43,6 +38,7 @@ const DashboardContainer: React.FC<{
                         navigation={navigation}
                         navbarState={navbarState}
                         setNavbarState={setNavbarState}
+                        user={user}
                     />
 
                     {/* Desktop navigation */}
@@ -51,9 +47,7 @@ const DashboardContainer: React.FC<{
                         navigation={navigation}
                         navbarState={navbarState}
                         setNavbarState={setNavbarState}
-                        userImage={image}
-                        userName={name}
-                        isAdministrator={isAdministrator}
+                        user={user}
                     />
                     <div className="flex flex-1 flex-col md:pl-64">
                         {/* Button to open MobileNav */}

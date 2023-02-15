@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { hash } from "argon2";
 import { TRPCError } from "@trpc/server";
+import { toast } from "react-hot-toast";
 
 export const useCustomAuth = createTRPCRouter({
   signUp: publicProcedure
@@ -31,6 +32,8 @@ export const useCustomAuth = createTRPCRouter({
           password: hashedPassword,
         },
       });
+
+      toast.success("Account created successfully");
 
       return {
         status: 201,

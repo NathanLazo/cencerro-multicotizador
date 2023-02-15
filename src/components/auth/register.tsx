@@ -4,8 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "react-hot-toast";
 import { api } from "@utils/api";
+import { useRouter } from "next/router";
 
 const RegisterComponent: React.FC = () => {
+
+    const router = useRouter();
 
     const formObjectValidation = z.object({
         email: z.string().email(),
@@ -39,7 +42,7 @@ const RegisterComponent: React.FC = () => {
             email: data.email,
             password: data.password,
         })
-        toast.loading("Creando usuario...");
+        router.push("/auth/login");
     };
 
     if (errors.email?.message) toast.error("Email no valido");

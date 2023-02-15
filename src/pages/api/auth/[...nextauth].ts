@@ -7,6 +7,7 @@ import { prisma } from "../../../server/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from "zod";
 import { verify } from "argon2";
+import toast from "react-hot-toast";
 
 const loginSchema = z.object({
   email: z.string().email(),

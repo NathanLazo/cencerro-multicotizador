@@ -18,6 +18,34 @@ export const UserData = createTRPCRouter({
       },
     });
   }),
+  deleteUser: publicProcedure
+    .input(z.object({ email: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.delete({
+        where: {
+          email: input.email,
+        },
+      });
+    }),
+  updateUser: publicProcedure
+    .input(
+      z.object({
+        email: z.string(),
+        name: z.string(),
+        image: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          email: input.email,
+        },
+        data: {
+          name: input.name,
+          image: input.image,
+        },
+      });
+    }),
   setUserAdmin: publicProcedure
     .input(z.object({ email: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -27,6 +55,18 @@ export const UserData = createTRPCRouter({
         },
         data: {
           isAdministrator: true,
+        },
+      });
+    }),
+  setUserNotAdmin: publicProcedure
+    .input(z.object({ email: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.prisma.user.update({
+        where: {
+          email: input.email,
+        },
+        data: {
+          isAdministrator: false,
         },
       });
     }),

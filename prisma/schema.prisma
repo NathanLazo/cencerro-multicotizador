@@ -8,6 +8,8 @@ datasource db {
   relationMode = "prisma"
 }
 
+// User model
+
 model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   id                String  @id @default(cuid())
@@ -58,6 +60,8 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Municipios relacionado por estados
+
 model estados_municipios {
   id            Int @id @default(autoincrement())
   estados_id    Int
@@ -75,4 +79,24 @@ model municipios {
 model Estado {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+// Car's model
+
+model Years {
+  year   String   @id @db.VarChar(4)
+  Brands Brands[]
+}
+
+model Brands {
+  id     Int      @id @default(autoincrement())
+  brand  String   @db.VarChar(100)
+  year   Years[]
+  Models Models[]
+}
+
+model Models {
+  id    Int      @id @default(autoincrement())
+  model String   @db.VarChar(100)
+  brand Brands[]
 }

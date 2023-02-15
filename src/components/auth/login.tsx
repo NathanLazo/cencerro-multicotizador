@@ -3,6 +3,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const LoginComponent: React.FC = () => {
 
@@ -20,6 +21,7 @@ const LoginComponent: React.FC = () => {
     };
 
 
+    if (errors.email?.message) toast.error("Email no valido");
 
     return (
         <>
