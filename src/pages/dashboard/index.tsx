@@ -31,7 +31,6 @@ const Dashboard: NextPage = () => {
             console.log(error);
         } else if (data) {
             if (data.accessGranted) {
-                toast.success(`Bienvenido ${data.name}`);
                 return (
                     <>
                         <Head>

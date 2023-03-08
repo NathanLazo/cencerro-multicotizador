@@ -7,7 +7,17 @@ import { toast } from "react-hot-toast";
 export const useCustomAuth = createTRPCRouter({
   signUp: publicProcedure
     .input(
-      z.object({ name: z.string(), email: z.string(), password: z.string() })
+      z.object({
+        name: z.string(),
+        email: z.string().email(),
+        password: z
+          .string()
+          .regex(new RegExp(".*[A-Z].*"))
+          .regex(new RegExp(".*[a-z].*"))
+          .regex(new RegExp(".*\\d.*"))
+          .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"))
+          .min(8, "Must be at least 8 characters in length"),
+      })
     )
     .mutation(async ({ ctx, input }) => {
       const exists = await ctx.prisma.user.findFirst({

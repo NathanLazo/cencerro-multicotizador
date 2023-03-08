@@ -62,7 +62,7 @@ model VerificationToken {
 
 // Municipios relacionado por estados
 
-model estados_municipios {
+model Estado_Municipio {
   id            Int @id @default(autoincrement())
   estados_id    Int
   municipios_id Int
@@ -71,7 +71,7 @@ model estados_municipios {
   @@index([municipios_id], map: "municipios_id_refs_id_6d8b23ec")
 }
 
-model municipios {
+model Municipio {
   id        Int    @id @default(autoincrement())
   municipio String @db.VarChar(100)
 }
@@ -83,20 +83,34 @@ model Estado {
 
 // Car's model
 
-model Years {
-  year   String   @id @db.VarChar(4)
-  Brands Brands[]
+model Year {
+  year   String  @id @db.VarChar(4)
+  brands Brand[]
 }
 
-model Brands {
-  id     Int      @id @default(autoincrement())
-  brand  String   @db.VarChar(100)
-  year   Years[]
-  Models Models[]
+model Brand {
+  id     String  @id @default(cuid())
+  brand  String  @db.VarChar(100)
+  year   Year    @relation(fields: [yearId], references: [year])
+  yearId String  @db.VarChar(4)
+  models Model[]
+
+  @@unique([brand, yearId])
 }
 
-model Models {
-  id    Int      @id @default(autoincrement())
-  model String   @db.VarChar(100)
-  brand Brands[]
+model Model {
+  id       String     @id @default(cuid())
+  model    String     @db.VarChar(100)
+  brand    Brand      @relation(fields: [brandId], references: [id])
+  brandId  String
+  SubModel SubModel[]
+
+  @@unique([model, brandId])
+}
+
+model SubModel {
+  id       String @id @default(cuid())
+  subModel String @db.VarChar(100)
+  model    Model  @relation(fields: [modelId], references: [id])
+  modelId  String
 }

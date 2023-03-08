@@ -1,9 +1,30 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { api } from '@utils/api';
+import { useState } from "react";
 
 
-export default function allCars() {
+const AllCars = () => {
+
+    const [selectedYear, setSelectedYear] = useState<string>("");
+    const [selectedBrand, setSelectedBrand] = useState<string>("");
+
+    const years = api.insuranceData.getYears.useQuery().data;
+
+    const brand = api.insuranceData.getBrands.useQuery({
+        year: selectedYear
+    }).data;
+
+    const models = api.insuranceData.getModels.useQuery({
+        brand: selectedBrand
+    }).data
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // QUERY TO ALL INSURANCES
+    }
+
     return (
-        <form className="space-y-8 divide-y divide-gray-200">
+        <form className="space-y-8 divide-y divide-gray-200" onSubmit={handleSubmit}>
             <div className="space-y-8 divide-y divide-gray-200 sm:space-y-5">
                 <div className="space-y-6 sm:space-y-5">
                     <div>
@@ -23,8 +44,17 @@ export default function allCars() {
                                     id="year"
                                     name="year"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                    onChange={(e) => setSelectedYear(e.target.value)}
                                 >
-                                    <option>xxx</option>
+                                    <option>Not selected</option>
+
+                                    {
+                                        years?.map((year) => {
+                                            return (
+                                                <option key={year.year}>{year.year}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -38,14 +68,27 @@ export default function allCars() {
                                     id="brand"
                                     name="brand"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                    onChange={(e) => setSelectedBrand(e.target.value)}
                                 >
-                                    <option>xxx</option>
+                                    <option>Not selected</option>
+                                    {
+                                        brand?.map((brand) => {
+                                            return (
+                                                <option
+                                                    key={brand.brand}
+                                                    value={brand.id}
+                                                >
+                                                    {brand.brand}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                         </div>
                         <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
                             <label htmlFor="about" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                Tipos
+                                Modelos
                             </label>
                             <div className="mt-1 sm:col-span-2 sm:mt-0">
                                 <select
@@ -53,7 +96,33 @@ export default function allCars() {
                                     name="type"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                 >
-                                    <option>xxx</option>
+                                    <option>Not selected</option>
+                                    {
+                                        models?.map((model) => {
+                                            return (
+                                                <option
+                                                    key={model.model}
+                                                    value={model.model}
+                                                >
+                                                    {model.model}
+                                                </option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label htmlFor="about" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                                Sub-modelos
+                            </label>
+                            <div className="mt-1 sm:col-span-2 sm:mt-0">
+                                <select
+                                    id="type"
+                                    name="type"
+                                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                >
+                                    <option>Not selected</option>
                                 </select>
                             </div>
                         </div>
@@ -74,3 +143,6 @@ export default function allCars() {
         </form>
     )
 }
+
+
+export default AllCars;
