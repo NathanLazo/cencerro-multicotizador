@@ -1,12 +1,15 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { api } from '@utils/api';
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 
 const AllCars = () => {
 
     const [selectedYear, setSelectedYear] = useState<string>("");
     const [selectedBrand, setSelectedBrand] = useState<string>("");
+    const [selectedModel, setSelectedModel] = useState<string>("");
+    const [selectedSubModel, setSelectedSubModel] = useState<string>("");
 
     const years = api.insuranceData.getYears.useQuery().data;
 
@@ -18,9 +21,22 @@ const AllCars = () => {
         brand: selectedBrand
     }).data
 
+    const subModels = api.insuranceData.getSubModels.useQuery({
+        model: selectedModel
+    }).data
+    console.log("🚀 ~ file: all.tsx:26 ~ AllCars ~ subModel:", subModels)
+
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!selectedYear || !selectedBrand || !selectedModel || !selectedSubModel) {
+            toast.error("Por favor seleccione todos los campos");
+            return;
+        }
+
         // QUERY TO ALL INSURANCES
+        toast.success("Peticion enviada aguarde un momento...");
     }
 
     return (
@@ -46,8 +62,7 @@ const AllCars = () => {
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                     onChange={(e) => setSelectedYear(e.target.value)}
                                 >
-                                    <option>Not selected</option>
-
+                                    <option value={""}>Not selected</option>
                                     {
                                         years?.map((year) => {
                                             return (
@@ -70,7 +85,7 @@ const AllCars = () => {
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
                                     onChange={(e) => setSelectedBrand(e.target.value)}
                                 >
-                                    <option>Not selected</option>
+                                    <option value={""}>Not selected</option>
                                     {
                                         brand?.map((brand) => {
                                             return (
@@ -95,14 +110,15 @@ const AllCars = () => {
                                     id="type"
                                     name="type"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                    onChange={(e) => setSelectedModel(e.target.value)}
                                 >
-                                    <option>Not selected</option>
+                                    <option value={""}>Not selected</option>
                                     {
                                         models?.map((model) => {
                                             return (
                                                 <option
                                                     key={model.model}
-                                                    value={model.model}
+                                                    value={model.id}
                                                 >
                                                     {model.model}
                                                 </option>
@@ -121,8 +137,21 @@ const AllCars = () => {
                                     id="type"
                                     name="type"
                                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
+                                    onChange={(e) => setSelectedSubModel(e.target.value)}
                                 >
-                                    <option>Not selected</option>
+                                    <option value={""}>Not selected</option>
+                                    {
+                                        subModels?.map((subModel) => {
+                                            return (
+                                                <option
+                                                    key={subModel.modelId}
+                                                    value={subModel.modelId}
+                                                >
+                                                    {subModel.subModel}
+                                                </option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                         </div>

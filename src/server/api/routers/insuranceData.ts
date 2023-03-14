@@ -103,12 +103,27 @@ export const insuranceData = createTRPCRouter({
           message: "SubModel already exists.",
         });
       }
+
+      const brand = await ctx.prisma.brand.findFirst({
+        where: {
+          brand: input.brand,
+          yearId: input.year,
+        },
+      });
+
+      const model = await ctx.prisma.model.findFirst({
+        where: {
+          brandId: brand?.id,
+          model: input.model,
+        },
+      });
+
       return await ctx.prisma.subModel.create({
         data: {
           subModel: input.subModel,
           model: {
             connect: {
-              id: input.model,
+              id: model?.id,
             },
           },
         },
@@ -148,4 +163,18 @@ export const insuranceData = createTRPCRouter({
   getAllModels: publicProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.model.findMany();
   }),
+  getSubModels: publicProcedure
+    .input(z.object({ model: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      if (!input?.model) {
+        return [];
+      }
+      return await ctx.prisma.subModel.findMany({
+        where: {
+          model: {
+            id: input.model,
+          },
+        },
+      });
+    }),
 });

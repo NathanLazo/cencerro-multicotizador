@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { api } from "@utils/api";
 import json from "@json/chubb.json";
-import { Car } from "./types";
+import { type Car } from "../../json/types";
 
 const Db: NextPage = () => {
     const brandMutation = api.insuranceData.addBrand.useMutation();
