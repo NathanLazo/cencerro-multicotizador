@@ -7,7 +7,6 @@ import { prisma } from "../../../server/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from "zod";
 import { verify } from "argon2";
-import toast from "react-hot-toast";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -43,7 +42,6 @@ export const authOptions: NextAuthOptions = {
         return {
           id: profile.sub,
           name: profile.name,
-          user: profile.given_name, // The user has to be an object but I dont know what does it needs
           email: profile.email,
           image: profile.picture,
         };

@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { api } from '@utils/api';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 
@@ -24,7 +24,21 @@ const AllCars = () => {
     const subModels = api.insuranceData.getSubModels.useQuery({
         model: selectedModel
     }).data
-    console.log("🚀 ~ file: all.tsx:26 ~ AllCars ~ subModel:", subModels)
+
+    useEffect(() => {
+        setSelectedBrand("");
+        setSelectedModel("");
+        setSelectedSubModel("");
+    }, [selectedYear])
+
+    useEffect(() => {
+        setSelectedModel("");
+        setSelectedSubModel("");
+    }, [selectedBrand])
+
+    useEffect(() => {
+        setSelectedSubModel("");
+    }, [selectedModel])
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

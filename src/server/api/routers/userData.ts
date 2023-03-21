@@ -46,27 +46,27 @@ export const UserData = createTRPCRouter({
         },
       });
     }),
-  setUserAdmin: publicProcedure
-    .input(z.object({ email: z.string() }))
+  giveAccess: publicProcedure
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.user.update({
         where: {
-          email: input.email,
+          id: input.id,
         },
         data: {
-          isAdministrator: true,
+          accessGranted: true,
         },
       });
     }),
-  setUserNotAdmin: publicProcedure
-    .input(z.object({ email: z.string() }))
+  revokeAccess: publicProcedure
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return await ctx.prisma.user.update({
         where: {
-          email: input.email,
+          id: input.id,
         },
         data: {
-          isAdministrator: false,
+          accessGranted: false,
         },
       });
     }),
